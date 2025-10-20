@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
+</head>
+<body>
+<div id="message"></div>
+
+<script>
+    // Проверяем наличие токена в localStorage
+    let accessToken = localStorage.getItem('access-token');
+
+    // Если токена нет, генерируем и сохраняем новый
+    if (!accessToken) {
+        accessToken = generateRandomToken();
+        localStorage.setItem('access-token', accessToken);
+    }
+
+    // Отображаем приветствие с токеном
+    document.getElementById('message').textContent = `Hello World, ${accessToken}`;
+
+    // Функция генерации случайного токена
+    function generateRandomToken() {
+        return Math.random().toString(36).substring(2) + Date.now().toString(36);
+    }
+</script>
+</body>
+</html>
