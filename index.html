@@ -1,30 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+    <title>Помощник в общежитии</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-<div id="message"></div>
+    <div id="app">
+        <!-- Loading Page -->
+        <div id="loading-page">
+            <div class="loader">Загрузка...</div>
+        </div>
 
-<script>
-    // Проверяем наличие токена в localStorage
-    let accessToken = localStorage.getItem('access-token');
+        <!-- Main App Page -->
+        <div id="main-page" class="hidden">
+            <header>
+                <h1>🏠 Помощник в общежитии</h1>
+                <div class="user-info">
+                    <span>Пользователь: <strong id="username-display">-</strong></span>
+                </div>
+            </header>
+            <main>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="nav-link active" data-target="laundry">🧺 Прачечная</a></li>
+                        <li><a href="#" class="nav-link" data-target="kitchen">🍳 Кухня</a></li>
+                    </ul>
+                </nav>
 
-    // Если токена нет, генерируем и сохраняем новый
-    if (!accessToken) {
-        accessToken = generateRandomToken();
-        localStorage.setItem('access-token', accessToken);
-    }
+                <!-- Laundry Section -->
+                <section id="laundry-section">
+                    <div class="section-header">
+                        <h2>Прачечная (макс. 2 часа)</h2>
+                        <button class="btn-primary" id="create-laundry-btn">➕ Создать бронирование</button>
+                    </div>
 
-    // Отображаем приветствие с токеном
-    document.getElementById('message').textContent = `Hello World, ${accessToken}`;
+                    <div class="bookings-container">
+                        <div class="bookings-column">
+                            <h3>Мои бронирования</h3>
+                            <div id="my-laundry-bookings" class="bookings-list"></div>
+                        </div>
+                        <div class="bookings-column">
+                            <h3>Все бронирования</h3>
+                            <div id="all-laundry-bookings" class="bookings-list"></div>
+                        </div>
+                    </div>
+                </section>
 
-    // Функция генерации случайного токена
-    function generateRandomToken() {
-        return Math.random().toString(36).substring(2) + Date.now().toString(36);
-    }
-</script>
+                <!-- Kitchen Section -->
+                <section id="kitchen-section" class="hidden">
+                    <div class="section-header">
+                        <h2>Кухня (макс. 3 часа)</h2>
+                        <button class="btn-primary" id="create-kitchen-btn">➕ Создать бронирование</button>
+                    </div>
+
+                    <div class="bookings-container">
+                        <div class="bookings-column">
+                            <h3>Мои бронирования</h3>
+                            <div id="my-kitchen-bookings" class="bookings-list"></div>
+                        </div>
+                        <div class="bookings-column">
+                            <h3>Все бронирования</h3>
+                            <div id="all-kitchen-bookings" class="bookings-list"></div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Booking Modal -->
+        <div id="booking-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3 id="modal-title">Создать бронирование</h3>
+                <form id="booking-form">
+                    <div class="input-group">
+                        <label for="start-time">Время начала:</label>
+                        <input type="datetime-local" id="start-time" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="end-time">Время окончания:</label>
+                        <input type="datetime-local" id="end-time" required>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="submit" class="btn-primary">Создать</button>
+                        <button type="button" class="btn-secondary" id="cancel-booking-btn">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div id="toast-container"></div>
+    </div>
+
+    <script src="js/app.js"></script>
 </body>
+
 </html>
