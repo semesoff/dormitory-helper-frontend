@@ -28,6 +28,9 @@
                     <ul>
                         <li><a href="#" class="nav-link active" data-target="laundry">🧺 Прачечная</a></li>
                         <li><a href="#" class="nav-link" data-target="kitchen">🍳 Кухня</a></li>
+                        <li><a href="#" class="nav-link" data-target="repairs">🔧 Заявки на ремонт</a></li>
+                        <li><a href="#" class="nav-link" data-target="exchange">🔄 Обмен вещами</a></li>
+                        <li><a href="#" class="nav-link" data-target="announcements">📢 Объявления</a></li>
                     </ul>
                 </nav>
 
@@ -68,6 +71,48 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- Repairs Section -->
+                <section id="repairs-section" class="hidden">
+                    <div class="section-header">
+                        <h2>Заявки на ремонт</h2>
+                        <button class="btn-primary" id="create-repair-btn">➕ Создать заявку</button>
+                    </div>
+
+                    <div class="bookings-container">
+                        <div class="bookings-column">
+                            <h3>Мои заявки</h3>
+                            <div id="my-repairs" class="bookings-list"></div>
+                        </div>
+                        <div class="bookings-column">
+                            <h3>Все заявки</h3>
+                            <div id="all-repairs" class="bookings-list"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Exchange Section -->
+                <section id="exchange-section" class="hidden">
+                    <div class="section-header">
+                        <h2>Обмен вещами</h2>
+                        <button class="btn-primary" id="create-exchange-btn">➕ Добавить объявление</button>
+                    </div>
+
+                    <div class="exchange-container">
+                        <div id="exchange-list" class="exchange-grid"></div>
+                    </div>
+                </section>
+
+                <!-- Announcements Section -->
+                <section id="announcements-section" class="hidden">
+                    <div class="section-header">
+                        <h2>Объявления от администрации</h2>
+                    </div>
+
+                    <div class="announcements-container">
+                        <div id="announcements-list" class="announcements-grid"></div>
+                    </div>
+                </section>
             </main>
         </div>
 
@@ -87,6 +132,81 @@
                     <div class="modal-buttons">
                         <button type="submit" class="btn-primary">Создать</button>
                         <button type="button" class="btn-secondary" id="cancel-booking-btn">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Repair Request Modal -->
+        <div id="repair-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>Создать заявку на ремонт</h3>
+                <form id="repair-form">
+                    <div class="input-group">
+                        <label for="repair-location">Место:</label>
+                        <input type="text" id="repair-location" placeholder="Например: Комната 305" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="repair-category">Категория:</label>
+                        <select id="repair-category" required>
+                            <option value="">Выберите категорию</option>
+                            <option value="plumbing">Сантехника</option>
+                            <option value="electrical">Электрика</option>
+                            <option value="furniture">Мебель</option>
+                            <option value="heating">Отопление</option>
+                            <option value="windows">Окна/Двери</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="repair-description">Описание проблемы:</label>
+                        <textarea id="repair-description" rows="4" placeholder="Опишите проблему подробно..." required></textarea>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="submit" class="btn-primary">Создать заявку</button>
+                        <button type="button" class="btn-secondary" id="cancel-repair-btn">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Exchange Item Modal -->
+        <div id="exchange-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>Добавить объявление</h3>
+                <form id="exchange-form">
+                    <div class="input-group">
+                        <label for="exchange-title">Название:</label>
+                        <input type="text" id="exchange-title" placeholder="Например: Настольная лампа" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="exchange-category">Категория:</label>
+                        <select id="exchange-category" required>
+                            <option value="">Выберите категорию</option>
+                            <option value="electronics">Электроника</option>
+                            <option value="furniture">Мебель</option>
+                            <option value="books">Книги</option>
+                            <option value="clothes">Одежда</option>
+                            <option value="kitchenware">Посуда</option>
+                            <option value="sports">Спорт</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="exchange-type">Тип:</label>
+                        <select id="exchange-type" required>
+                            <option value="give">Отдам даром</option>
+                            <option value="exchange">Обмен</option>
+                            <option value="sell">Продам</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="exchange-description">Описание:</label>
+                        <textarea id="exchange-description" rows="4" placeholder="Опишите вещь и условия..." required></textarea>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="submit" class="btn-primary">Добавить</button>
+                        <button type="button" class="btn-secondary" id="cancel-exchange-btn">Отмена</button>
                     </div>
                 </form>
             </div>
