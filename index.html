@@ -21,6 +21,7 @@
                 <h1>🏠 Помощник в общежитии</h1>
                 <div class="user-info">
                     <span>Пользователь: <strong id="username-display">-</strong></span>
+                    <span id="admin-badge" class="admin-badge hidden">АДМИН</span>
                 </div>
             </header>
             <main>
@@ -31,7 +32,15 @@
                         <li><a href="#" class="nav-link" data-target="repairs">🔧 Заявки на ремонт</a></li>
                         <li><a href="#" class="nav-link" data-target="exchange">🔄 Обмен вещами</a></li>
                         <li><a href="#" class="nav-link" data-target="announcements">📢 Объявления</a></li>
+                        <li><a href="#" class="nav-link" data-target="reminders">🔔 Напоминания</a></li>
+                        <li><a href="#" class="nav-link" data-target="polls">📊 Голосования</a></li>
+                        <li><a href="#" class="nav-link" data-target="faq">🤖 FAQ-бот</a></li>
+                        <li><a href="#" class="nav-link admin-only hidden" data-target="analytics">📈 Аналитика</a></li>
+                        <li><a href="#" class="nav-link admin-only hidden" data-target="admin-panel">⚙️ Админ-панель</a></li>
                     </ul>
+                    <div class="nav-admin-login">
+                        <button id="admin-login-btn" class="btn-admin-hidden" title="Войти как администратор">🔑</button>
+                    </div>
                 </nav>
 
                 <!-- Laundry Section -->
@@ -111,6 +120,227 @@
 
                     <div class="announcements-container">
                         <div id="announcements-list" class="announcements-grid"></div>
+                    </div>
+                </section>
+
+                <!-- Reminders Section -->
+                <section id="reminders-section" class="hidden">
+                    <div class="section-header">
+                        <h2>🔔 Умные напоминания</h2>
+                    </div>
+                    <div class="reminders-settings">
+                        <h3>Настройки напоминаний</h3>
+                        <div class="reminder-toggle-group">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="reminder-bookings" checked>
+                                <span class="toggle-slider"></span>
+                                Напоминания о бронированиях
+                            </label>
+                            <label class="toggle-label">
+                                <input type="checkbox" id="reminder-repairs" checked>
+                                <span class="toggle-slider"></span>
+                                Уведомления об изменении статуса заявок
+                            </label>
+                            <label class="toggle-label">
+                                <input type="checkbox" id="reminder-polls" checked>
+                                <span class="toggle-slider"></span>
+                                Напоминания о новых голосованиях
+                            </label>
+                        </div>
+                    </div>
+                    <div class="reminders-list-container">
+                        <h3>Активные напоминания</h3>
+                        <div id="reminders-list" class="reminders-grid"></div>
+                    </div>
+                </section>
+
+                <!-- Polls Section -->
+                <section id="polls-section" class="hidden">
+                    <div class="section-header">
+                        <h2>📊 Голосования и опросы</h2>
+                        <button class="btn-primary admin-only hidden" id="create-poll-btn">➕ Создать голосование</button>
+                    </div>
+                    <div class="polls-container">
+                        <div id="polls-list" class="polls-grid"></div>
+                    </div>
+                </section>
+
+                <!-- FAQ Bot Section -->
+                <section id="faq-section" class="hidden">
+                    <div class="section-header">
+                        <h2>🤖 FAQ-бот</h2>
+                    </div>
+                    <div class="faq-chat-container">
+                        <div id="faq-chat" class="faq-chat">
+                            <div class="faq-message bot-message">
+                                <div class="faq-avatar">🤖</div>
+                                <div class="faq-bubble">Здравствуйте! Я FAQ-бот общежития. Задайте мне вопрос или выберите тему ниже.</div>
+                            </div>
+                        </div>
+                        <div class="faq-quick-topics">
+                            <button class="faq-topic-btn" data-topic="rules">📋 Правила проживания</button>
+                            <button class="faq-topic-btn" data-topic="laundry">🧺 Прачечная</button>
+                            <button class="faq-topic-btn" data-topic="repairs">🔧 Ремонт</button>
+                            <button class="faq-topic-btn" data-topic="payments">💰 Оплата</button>
+                            <button class="faq-topic-btn" data-topic="contacts">📞 Контакты</button>
+                            <button class="faq-topic-btn" data-topic="guests">👥 Гости</button>
+                        </div>
+                        <div class="faq-input-container">
+                            <input type="text" id="faq-input" placeholder="Введите ваш вопрос..." autocomplete="off">
+                            <button id="faq-send-btn" class="btn-primary">Отправить</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analytics Dashboard Section (Admin only) -->
+                <section id="analytics-section" class="hidden">
+                    <div class="section-header">
+                        <h2>📈 Дашборд аналитики</h2>
+                    </div>
+                    <div class="analytics-container">
+                        <div class="analytics-cards">
+                            <div class="analytics-card stat-card">
+                                <div class="stat-icon">🧺</div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="stat-laundry">0</div>
+                                    <div class="stat-label">Бронирований прачечной</div>
+                                </div>
+                            </div>
+                            <div class="analytics-card stat-card">
+                                <div class="stat-icon">🍳</div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="stat-kitchen">0</div>
+                                    <div class="stat-label">Бронирований кухни</div>
+                                </div>
+                            </div>
+                            <div class="analytics-card stat-card">
+                                <div class="stat-icon">🔧</div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="stat-repairs">0</div>
+                                    <div class="stat-label">Заявок на ремонт</div>
+                                </div>
+                            </div>
+                            <div class="analytics-card stat-card">
+                                <div class="stat-icon">🔄</div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="stat-exchange">0</div>
+                                    <div class="stat-label">Объявлений обмена</div>
+                                </div>
+                            </div>
+                            <div class="analytics-card stat-card">
+                                <div class="stat-icon">📊</div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="stat-polls">0</div>
+                                    <div class="stat-label">Голосований</div>
+                                </div>
+                            </div>
+                            <div class="analytics-card stat-card">
+                                <div class="stat-icon">👥</div>
+                                <div class="stat-info">
+                                    <div class="stat-value" id="stat-users">0</div>
+                                    <div class="stat-label">Активных пользователей</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="analytics-charts">
+                            <div class="analytics-card chart-card">
+                                <h3>Статусы заявок на ремонт</h3>
+                                <div id="repairs-chart" class="bar-chart"></div>
+                            </div>
+                            <div class="analytics-card chart-card">
+                                <h3>Типы объявлений обмена</h3>
+                                <div id="exchange-chart" class="bar-chart"></div>
+                            </div>
+                            <div class="analytics-card chart-card">
+                                <h3>Активность за неделю</h3>
+                                <div id="activity-chart" class="bar-chart"></div>
+                            </div>
+                            <div class="analytics-card chart-card">
+                                <h3>Результаты голосований</h3>
+                                <div id="polls-chart" class="bar-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Admin Panel Section -->
+                <section id="admin-panel-section" class="hidden">
+                    <div class="section-header">
+                        <h2>⚙️ Панель администратора</h2>
+                        <button class="btn-danger" id="admin-logout-btn">Выйти из админки</button>
+                    </div>
+                    <div class="admin-tabs">
+                        <button class="admin-tab active" data-admin-tab="faq-manage">📚 База знаний FAQ</button>
+                        <button class="admin-tab" data-admin-tab="announcements-manage">📢 Объявления</button>
+                        <button class="admin-tab" data-admin-tab="repairs-manage">🔧 Заявки</button>
+                    </div>
+                    <div class="admin-content">
+                        <!-- FAQ Management -->
+                        <div id="faq-manage-tab" class="admin-tab-content">
+                            <div class="admin-form-section">
+                                <h3>Добавить вопрос-ответ</h3>
+                                <form id="faq-admin-form">
+                                    <div class="input-group">
+                                        <label for="faq-admin-topic">Тема:</label>
+                                        <select id="faq-admin-topic" required>
+                                            <option value="rules">Правила проживания</option>
+                                            <option value="laundry">Прачечная</option>
+                                            <option value="repairs">Ремонт</option>
+                                            <option value="payments">Оплата</option>
+                                            <option value="contacts">Контакты</option>
+                                            <option value="guests">Гости</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="faq-admin-keywords">Ключевые слова (через запятую):</label>
+                                        <input type="text" id="faq-admin-keywords" placeholder="ключ1, ключ2, ключ3" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="faq-admin-question">Вопрос:</label>
+                                        <input type="text" id="faq-admin-question" placeholder="Как...?" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="faq-admin-answer">Ответ:</label>
+                                        <textarea id="faq-admin-answer" rows="4" placeholder="Подробный ответ..." required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn-primary">Добавить в базу</button>
+                                </form>
+                            </div>
+                            <div class="admin-list-section">
+                                <h3>Текущая база знаний</h3>
+                                <div id="faq-admin-list"></div>
+                            </div>
+                        </div>
+                        <!-- Announcements Management -->
+                        <div id="announcements-manage-tab" class="admin-tab-content hidden">
+                            <div class="admin-form-section">
+                                <h3>Создать объявление</h3>
+                                <form id="announcement-admin-form">
+                                    <div class="input-group">
+                                        <label for="announcement-admin-title">Заголовок:</label>
+                                        <input type="text" id="announcement-admin-title" placeholder="Заголовок объявления" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="announcement-admin-content">Содержание:</label>
+                                        <textarea id="announcement-admin-content" rows="4" placeholder="Текст объявления..." required></textarea>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="announcement-admin-priority">Приоритет:</label>
+                                        <select id="announcement-admin-priority" required>
+                                            <option value="low">Информация</option>
+                                            <option value="medium">Средний</option>
+                                            <option value="high">Важно</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn-primary">Опубликовать</button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- Repairs Management -->
+                        <div id="repairs-manage-tab" class="admin-tab-content hidden">
+                            <h3>Управление заявками на ремонт</h3>
+                            <div id="admin-repairs-list"></div>
+                        </div>
                     </div>
                 </section>
             </main>
@@ -207,6 +437,59 @@
                     <div class="modal-buttons">
                         <button type="submit" class="btn-primary">Добавить</button>
                         <button type="button" class="btn-secondary" id="cancel-exchange-btn">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Admin Login Modal -->
+        <div id="admin-login-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>🔑 Вход для администратора</h3>
+                <form id="admin-login-form">
+                    <div class="input-group">
+                        <label for="admin-password">Пароль:</label>
+                        <input type="password" id="admin-password" placeholder="Введите пароль администратора" required>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="submit" class="btn-primary">Войти</button>
+                        <button type="button" class="btn-secondary" id="cancel-admin-login-btn">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Poll Creation Modal -->
+        <div id="poll-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>Создать голосование</h3>
+                <form id="poll-form">
+                    <div class="input-group">
+                        <label for="poll-title">Вопрос голосования:</label>
+                        <input type="text" id="poll-title" placeholder="О чём голосуем?" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Варианты ответов:</label>
+                        <div id="poll-options-container">
+                            <input type="text" class="poll-option-input" placeholder="Вариант 1" required>
+                            <input type="text" class="poll-option-input" placeholder="Вариант 2" required>
+                        </div>
+                        <button type="button" class="btn-secondary" id="add-poll-option-btn" style="margin-top: 0.5rem;">➕ Добавить вариант</button>
+                    </div>
+                    <div class="input-group">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="poll-anonymous">
+                            <span class="toggle-slider"></span>
+                            Анонимное голосование
+                        </label>
+                    </div>
+                    <div class="input-group">
+                        <label for="poll-end-date">Дата окончания:</label>
+                        <input type="datetime-local" id="poll-end-date" required>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="submit" class="btn-primary">Создать</button>
+                        <button type="button" class="btn-secondary" id="cancel-poll-btn">Отмена</button>
                     </div>
                 </form>
             </div>
